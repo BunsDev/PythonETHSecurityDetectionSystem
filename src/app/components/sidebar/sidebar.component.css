@@ -1,0 +1,78 @@
+.sidebar {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 2rem;
+  position: fixed; /* Fixed position */
+  top: 0;
+  bottom: 0; /* Full height */
+  left: 0;
+  width: 220px; /* Sidebar width */
+  
+  z-index: 1000; /* Keeps the sidebar on top of other elements */
+  max-height: 100vh; /* Viewport Height */
+}
+
+.bottom-links {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 1rem;
+}
+
+.system-label {
+  color: #135D66;
+}
+
+.analysis-option {
+  cursor: default;
+  color: #ffffff; /* Example color */
+}
+
+.sub-menu {
+  padding-left: 50px; /* Adjust the value as needed */
+  margin-left: 1rem;
+}
+
+/* Content Area CSS */
+.content {
+  margin-left: 200px; /* Adjust this to match the width of your sidebar */
+  padding: 1rem;
+  overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+.display-username {
+  color: #ffffff;
+}
+  
+.nav {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 1rem 0;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #04d9ff; /* A light blue, for instance */
+}
+
+#system-label {
+  color: #7BC9FF;
+}
+
+.sidebar-icon {
+  width: 12px;  /* Or the size you want */
+  height: 12px; /* Or the size you want */
+  margin-right: 2px; /* Space between icon and label */
+  vertical-align: middle; /* Align icon with text */
+}
+
+

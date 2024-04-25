@@ -1,0 +1,96 @@
+<!-- Add your template code here with the table and search fields as described -->
+<h1 id="history_title">Smart Contract Vulnerability Analysis History</h1>
+<!-- Table for displaying analysis history -->
+<table>
+<!-- Table headers -->
+    <tr>
+        <th>Contract Name</th>
+        <th>Vulnerability Type</th>
+        <th>Security Level</th>
+        <th>Creation Date</th>
+    </tr>
+    <!-- Table rows for analysis history -->
+    <tr *ngFor="let entry of analysisHistory" 
+        (click)="selectEntry(entry)"
+        [class.selected-row]="selectedEntry === entry">
+        <td>{{ entry.contract_name }}</td>
+        <td>{{ entry.vulnerability_type }}</td>
+        <td>{{ entry.security_level }}</td>
+        <td>{{ entry.created_at | date }}</td>
+    </tr>
+</table>
+
+<!-- Search fields -->
+<div class="form-container" id="contract_name">
+    <input type="text" [(ngModel)]="searchName" placeholder="Search by name">
+</div>
+<div class="form-container" id="vul_type">
+    <select [(ngModel)]="searchType">
+    <option value="">Select Vulnerability Type</option>
+    <option value="Reentrancy attacks">Reentrancy attacks</option>
+    <option value="Oracle manipulation">Oracle manipulation</option>
+    <option value="Gas griefing">Gas griefing</option>
+    <option value="Transaction order dependence attacks (frontrunning)">Transaction order dependence attacks (frontrunning)</option>
+    <option value="Force-feeding attacks">Force-feeding attacks</option>
+    <option value="Timestamp dependence">Timestamp dependence</option>
+    <option value="Denial of service">Denial of service</option>
+    <option value="Integer underflows and overflows">Integer underflows and overflows</option>
+    <option value="Information and function exposure">Information and function exposure</option>
+    <option value="Others">Others (Specify in Search)</option>
+    </select>
+    <input type="text" *ngIf="searchType === 'Others'" [(ngModel)]="searchTypeOther" placeholder="Specify Other Type">
+</div>
+<div class="form-container" id="contract_date">
+    <input type="date" [(ngModel)]="searchDate" placeholder="Search by date">
+</div>
+<div class="form-container" id="search_contract_button">
+    <button (click)="search()">Search</button>
+</div>
+<!-- Add form fields for displaying and editing the selected analysis result -->
+<div *ngIf="selectedEntry">
+    <h1 id="result_title">Select Analysis Result</h1>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="location">Smart Contract Name</label>
+            <input type="text" [(ngModel)]="selectedEntry.contract_name" name="contractName" placeholder="Contract Name" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="vulnerabilityType">Vulnerability Type</label>
+            <input type="text" [(ngModel)]="selectedEntry.vulnerability_type" name="vulnerabilityType" placeholder="Vulnerability Type" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="securityLevel">Security Level</label>
+            <input type="text" [(ngModel)]="selectedEntry.security_level" name="securityLevel" placeholder="Security Level" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="location">Location</label>
+            <input type="text" [(ngModel)]="selectedEntry.location" name="location" placeholder="Location" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Consequences</label>
+            <textarea [(ngModel)]="selectedEntry.consequences" name="consequences" placeholder="Consequences" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>    
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Recommendation</label>
+            <textarea [(ngModel)]="selectedEntry.recommendation" name="recommendation" placeholder="Recommendation" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Explanation</label>
+            <textarea [(ngModel)]="selectedEntry.explanation" name="explanation" placeholder="Explanation" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="button-group">
+        <button (click)="edit()" [disabled]="editMode" class="edit-btn">Edit</button>
+        <button (click)="save()" class="save-btn" [disabled]="!editMode">Save</button>
+        <button (click)="cancel()" [disabled]="!editMode" class="cancel-btn">Cancel</button>
+        <button (click)="delete(selectedEntry.id)" [disabled]="!selectedEntry || editMode" class="delete-btn">Delete</button>
+    </div>
+</div>
+
+  

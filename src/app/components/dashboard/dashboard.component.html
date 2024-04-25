@@ -1,0 +1,51 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-wrapper">
+  <h1><b>DASHBOARD</b></h1>
+  
+
+  <!-- Onchain Stats section in dashboard.component.html -->
+  <div class="onchain-stats">
+    <h2><b>Onchain Stats</b></h2>
+    <div class="col-md-6 col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title"><b>Ether Price</b></h3>
+          <p class="card-text" *ngIf="etherPrice">{{etherPrice | currency:'USD'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title"><b>Latest Block Number</b></h3>
+        <p class="card-text">{{latestBlockNumber}}</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title"><b>Gas Prices (Gwei)</b></h3>
+        <p class="card-text"><b>Safe:</b> {{gasPrices?.SafeGasPrice}}</p>
+        <p class="card-text"><b>Proposed:</b> {{gasPrices?.ProposeGasPrice}}</p>
+        <p class="card-text"><b>Fast:</b> {{gasPrices?.FastGasPrice}}</p>
+        <p class="card-text"><b>Suggest Base Fee:</b> {{gasPrices?.suggestBaseFee}}</p>
+        <p class="card-text"><b>Gas Used Ratio:</b> {{gasPrices?.gasUsedRatio}}</p>
+      </div>
+    </div>
+    <!-- <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Pending Transactions</h3>
+        <p class="card-text">{{pendingTxCount}}</p>
+      </div>
+    </div> -->
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title"><b>ETH Supply and Staking</b></h3>
+        <p class="card-text"><b>Total Supply:</b> {{ethSupplyData?.EthSupply | number}}</p>
+        <p class="card-text"><b>ETH 2.0 Staking:</b> {{ethSupplyData?.Eth2Staking | number}}</p>
+        <p class="card-text"><b>Burnt Fees:</b> {{ethSupplyData?.BurntFees | number}}</p>
+        <p class="card-text"><b>Withdrawn Total:</b> {{ethSupplyData?.WithdrawnTotal | number}}</p>
+      </div>
+    </div>
+  </div>
+
+
+</div>

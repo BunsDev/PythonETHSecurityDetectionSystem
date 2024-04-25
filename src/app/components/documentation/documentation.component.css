@@ -1,0 +1,27 @@
+.documentation-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .documentation-container h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .documentation-container section {
+    margin-bottom: 30px;
+  }
+  
+  .documentation-container h2 {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .documentation-container p {
+    text-align: justify;
+    line-height: 1.6;
+  }
+  

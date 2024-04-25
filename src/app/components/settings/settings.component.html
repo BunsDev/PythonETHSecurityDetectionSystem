@@ -1,0 +1,58 @@
+<div class="settings-container">
+    <h1>Settings</h1>
+    
+    <!-- Notification Settings -->
+    <section>
+      <h2>Notification Settings</h2>
+      <form>
+        <div class="form-group">
+          <label for="securityAlerts">Security Alerts</label>
+          <input type="checkbox" id="securityAlerts" [(ngModel)]="settings.securityAlerts">
+        </div>
+        <!-- Additional notification settings here -->
+      </form>
+    </section>
+    
+    <!-- Analysis Thresholds -->
+    <section>
+      <h2>Analysis Thresholds</h2>
+      <form>
+        <div class="form-group">
+          <label for="severityLevel">Severity Level for Alerts</label>
+          <input type="range" id="severityLevel" min="1" max="10" [(ngModel)]="settings.severityLevel">
+        </div>
+        <!-- Additional thresholds settings here -->
+      </form>
+    </section>
+    
+    <!-- API Key Management -->
+    <section>
+      <h2>API Key Management</h2>
+      <form>
+        <div class="form-group">
+          <label for="etherscanApiKey">Etherscan API Key</label>
+          <input type="text" id="etherscanApiKey" [(ngModel)]="settings.etherscanApiKey">
+        </div>
+        <!-- Additional API key inputs here -->
+      </form>
+    </section>
+    
+    <!-- Display Preferences -->
+    <section>
+      <h2>Display Preferences</h2>
+      <form>
+        <div class="form-group">
+          <label for="theme">Theme</label>
+          <select id="theme" [(ngModel)]="settings.theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <!-- Additional display preferences here -->
+      </form>
+    </section>
+    
+    <!-- Save Button -->
+    <button (click)="saveSettings()">Save Settings</button>
+  </div>
+  

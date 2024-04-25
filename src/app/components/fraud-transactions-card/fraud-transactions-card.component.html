@@ -1,0 +1,60 @@
+<mat-card class="fraud-transaction-analysis-card">
+    <mat-card-header>
+      <mat-card-title id="card_header">Fraud Transaction Analysis</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="transaction-form">
+        <label class="sub_title">Transaction Name (Required For Saving The Result)*</label>
+        <mat-form-field appearance="outline" class="full-width-input">
+          <mat-label>Transaction Name (Required For Saving The Result)</mat-label>
+          <input matInput [(ngModel)]="transactionName" required>
+        </mat-form-field>
+      </div>
+      <br>
+      <div class="transaction-form">
+        <label class="sub_title">Transaction Hash (Required)*</label>
+        <mat-form-field appearance="outline" class="full-width-input">
+          <mat-label>Transaction Hash (Required)</mat-label>
+          <input matInput [(ngModel)]="transactionHash" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="analyzeTransaction()" class="analyze-button">Analyze Transaction</button>
+      </div>
+      <div *ngIf="isAnalyzing" class="spinner-container">
+        <mat-spinner></mat-spinner>
+        <p>Analyzing transaction...</p>
+      </div>
+      <br>
+      <mat-card class="fraud-transaction-analysis-card">
+        <!-- Inside your mat-card-content -->
+        <div *ngIf="fraudAnalysisResult">
+            <h3 class="fraud-analysis-result">ANALYSIS RESULT</h3>
+            <br>
+            <h3 class="fraud-analysis-result">Likelihood of Fraud or Phishing Scam: {{ fraudAnalysisResult.likelihoodOfFraud | removeSymbols }}</h3>
+            <br>
+            <p class="fraud-analysis-result"><strong>Type of Possible Fraud:</strong> {{ fraudAnalysisResult.fraudTransactionType | removeSymbols }}</p>
+            <br>
+            <p class="fraud-analysis-result"><strong>Ownership of From Address:</strong> {{ fraudAnalysisResult.ownershipFrom | removeSymbols }}</p>
+            <br>
+            <p class="fraud-analysis-result"><strong>Ownership of To Address:</strong> {{ fraudAnalysisResult.ownershipTo | removeSymbols }}</p>
+            <br>
+            <p class="fraud-analysis-result"><strong>Behavior of the From and To Addresses:</strong></p>
+            <p class="fraud-analysis-result">{{ fraudAnalysisResult.behavior | removeSymbols }}</p>
+            <br>
+            <p><strong>Peculiarities in the Transaction:</strong></p>
+            <p class="fraud-analysis-result">{{ fraudAnalysisResult.peculiarities | removeSymbols }}</p>
+            <br>
+        
+            <p class="fraud-analysis-result"><strong>Broader Context and Alerts:</strong></p> 
+            <p class="fraud-analysis-result">{{ fraudAnalysisResult.broaderContext | removeSymbols }}</p>
+            <br>
+            <p class="fraud-analysis-result"><strong>Supporting Evidence for Assessment:</strong></p> 
+            <p class="fraud-analysis-result">{{ fraudAnalysisResult.supportingEvidence | removeSymbols }}</p>
+            <br>
+            <p class="fraud-analysis-result"><strong>Recommended Actions:</strong></p> 
+            <p class="fraud-analysis-result">{{ fraudAnalysisResult.recommendActions| removeSymbols }}</p>
+            <button mat-raised-button color="accent" (click)="saveAnalysisResult()" [disabled]="!transactionName || !transactionHash" class="save-button">Save Analysis</button>
+        </div>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+  

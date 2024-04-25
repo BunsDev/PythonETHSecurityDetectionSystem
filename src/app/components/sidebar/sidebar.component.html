@@ -1,0 +1,59 @@
+<!-- sidebar.component.html -->
+<aside class="sidebar">
+  <div>
+    <ul class="nav flex-column">
+      <!-- existing nav-items -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <span class="analysis-option" *ngIf="(userService.currentUser | async)">Analysis Option</span>
+      <li class="nav-item" *ngIf="(userService.currentUser | async)">
+        <span class="analysis-option">
+          <img src="assets/images/icons/smart-contracts.png" alt="Dashboard" class="sidebar-icon">
+          Smart Contracts</span>
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a id="sub-title" class="nav-link" routerLink="/smart-contracts" routerLinkActive="active">Analysis New Contract</a>
+            </li>
+            <li class="nav-item">
+              <a id="sub-title" class="sub-title nav-link" routerLink="/analysis-history" routerLinkActive="active">
+                Smart Contract Analysis History</a>
+            </li>
+          </ul>
+      </li>
+      <li class="nav-item" *ngIf="(userService.currentUser | async)">
+        <span class="analysis-option">
+          <img src="assets/images/icons/transaction.png" alt="Dashboard" class="sidebar-icon">
+          Fraud Transactions</span>
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item">
+            <a id="sub-title" class="sub-title nav-link" routerLink="/fraud-transactions" routerLinkActive="active">Analysis New Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a id="sub-title" class="sub-title nav-link" routerLink="/fraud-analysis-history" routerLinkActive="active">Fraud Transaction Analysis History</a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/documentation" routerLinkActive="active">Documentation</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/support">Support</a>
+      </li>
+      <li class="nav-item" *ngIf="(userService.currentUser | async)">
+        <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
+      </li>
+    </ul>
+  </div>
+  <br>
+  <div class="bottom-links">
+    <a class="nav-link"  id="system-label" *ngIf="(userService.currentUser | async) === null" routerLink="/register">Register</a>
+    <br>
+    <a class="nav-link" id="system-label" *ngIf="(userService.currentUser | async) === null" routerLink="/login">Login</a>
+    <br>
+    <div class="display-username" id="system-label" *ngIf="(userService.currentUser | async)">Login User: {{ (userService.currentUser | async)?.username }}</div>
+    <br>
+    <a class="nav-link" id="system-label" *ngIf="(userService.currentUser | async)" (click)="logout()">Logout</a>
+    <br>   
+  </div>
+</aside>

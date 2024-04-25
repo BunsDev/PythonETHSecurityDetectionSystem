@@ -1,0 +1,12 @@
+.container-fluid {
+    display: flex;
+  }
+  
+  /* This class is for the main content area */
+.main-content {
+  margin-left: 250px; /* This should be the width of your sidebar */
+  flex-grow: 1; /* Ensures that the content area takes up the remaining space */
+  padding-left: 50px;
+  padding-right: 50px;
+  width: calc(100% - 200px); /* Adjust width dynamically based on the sidebar width */
+}

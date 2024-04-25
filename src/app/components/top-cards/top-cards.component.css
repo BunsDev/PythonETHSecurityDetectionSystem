@@ -1,0 +1,19 @@
+/* top-cards.component.css */
+.card {
+    /* Add styling that fits your theme */
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    transition: box-shadow .3s;
+  }
+  
+  .card:hover {
+    /* Slightly raise cards on hover for effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+  }
+  
+  .card-body {
+    /* Style for the card content */
+    text-align: center;
+  }
+  
+  /* You can add more styling as needed */
+  

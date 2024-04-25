@@ -1,0 +1,24 @@
+<div class="register-container">
+  <h2>Register</h2>
+  <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" formControlName="username" id="username" placeholder="Enter username" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" id="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" formControlName="password" id="password" placeholder="Enter password" required>
+      <!-- Display error message for password complexity -->
+      <div *ngIf="registerForm.get('password')?.errors?.['pattern'] && 
+            (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" 
+          class="alert alert-danger">
+        Password must be at least 8 characters and include uppercase, lowercase, numbers, and symbols.
+      </div>
+    </div>
+    <button type="submit" class="register-btn">Register</button>
+  </form>
+</div>

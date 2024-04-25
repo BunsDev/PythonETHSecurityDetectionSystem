@@ -1,0 +1,44 @@
+/* src/app/components/navbar/navbar.component.css */
+.navbar {
+    background-color: #333; /* Replace with the color of your choice */
+    color: white;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar {
+    background-color: #2b2b2b;
+    color: white;
+    padding: 0.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .nav-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-item:hover,
+  .nav-item.active {
+    background-color: #444;
+  }
+  
+  

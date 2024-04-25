@@ -1,0 +1,140 @@
+/* fraud-transactions-card.component.css */
+h2, h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+#card_header {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 1100px;
+  font-weight: bold;
+  text-decoration: underline;
+  
+}
+
+strong {
+  font-weight: bold;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between the input and the button */
+  
+}
+
+.full-width-input {
+  width: 50%; /* Full width input */
+}
+
+.fraud-analysis-result {
+  margin: 2px;
+}
+
+.analyze-button {
+  max-width: 200px; /* Adjust the width as needed */
+  margin-left: 2px; /* This will center the button */
+}
+
+.analysis-title {
+  text-decoration: underline;
+  margin-bottom: 10px; /* Space after the title */
+  font-weight: bold; /* If you want the title to be bold */
+}
+
+
+.sub_title {
+  font-weight: bold;
+  display: block; /* Subtitles are block elements */
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+  font-size: large;
+}
+
+p {
+  margin-bottom: 0.5em;
+}
+
+.sub-content {
+  display: block; /* Adjust as needed */
+  margin-left: 20px; /* Indent sub-content */
+}
+
+.analysis-result h1,
+.analysis-result h2,
+.analysis-result h3 {
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.analysis-result b {
+  font-weight: bold;
+}
+
+.analysis-result i {
+  font-style: italic;
+}
+
+.analysis-result ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.analysis-result li {
+  margin-bottom: 5px;
+}
+
+/* Additional styling to ensure the content is readable and professional */
+.analysis-result {
+  background-color: #f5f5f5; /* Light grey background */
+  border-radius: 5px; /* Rounded corners */
+  padding: 15px; /* Space inside the container */
+  margin-top: 10px; /* Space above the container */
+  max-width: 800px; /* or any maximum width that suits your design */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.centered-snack-bar {
+  justify-content: center;
+}
+
+/* Spinner container to align spinner and text */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* Adjust height as needed */
+  margin-top: 20px; /* Adjust top margin as needed */
+  font-size: 1.2em; /* Adjust font size */
+  font-weight: bold;
+}
+
+/* Specific styles for the spinner */
+.spinner-container .mat-spinner {
+  width: 50px; /* Adjust spinner size */
+  height: 50px; /* Adjust spinner size */
+}
+
+/* Styles for the analyzing text */
+.spinner-container .analyzing-text {
+  margin-top: 20px; /* Adjust distance between spinner and text */
+  font-size: 1.2em; /* Adjust font size */
+  color: #555; /* Adjust font color */
+  font-weight: bold;
+}
+
+.save-button{
+  margin-top: 10px;
+  padding-top: 10px;
+}
+

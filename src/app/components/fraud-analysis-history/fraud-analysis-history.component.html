@@ -1,0 +1,120 @@
+<h1 id="history_title">Fraud Transaction Analysis History</h1>
+
+<!-- Analysis History Table -->
+<table class="analysis-history-table">
+    <tr>
+      <th>Transaction Name</th>
+      <th>Ownership of From Address</th>
+      <th>Ownership of To Address</th>
+      <th>Fraud Transaction Type</th>
+      <th>Likelihood of Fraud</th>
+      <th>Result Saved On</th>
+    </tr>
+    <tr *ngFor="let analysis of fraudAnalysisHistory"
+        (click)="selectAnalysis(analysis)"
+        [class.selected-row]="selectedAnalysis === analysis">
+      <td>{{ analysis.transaction_name }}</td>
+      <td>{{ analysis.ownership_from }}</td>
+      <td>{{ analysis.ownership_to }}</td>
+      <td>{{ analysis.fraud_transaction_type }}</td>
+      <td>{{ analysis.likelihood_of_fraud }}</td>
+      <td>{{ analysis.created_at }}</td>
+    </tr>
+</table>
+
+<!-- Search Section -->
+<div class="form-container" id="transaction-name">
+    <input type="text" [(ngModel)]="searchName" placeholder="Transaction Name">
+</div>
+<div class="form-container" id="fraud-type">
+    <select [(ngModel)]="searchType">
+    <option value="">Select Fraud Type</option>
+    <option value="Broker Or Dealer Fraud">Broker Or Dealer Fraud</option>
+    <option value="Financial Crimes">Financial Crimes</option>
+    <option value="Market Manipulation">Market Manipulation</option>
+    <option value="Ponzi Schemes">Ponzi Schemes</option>
+    <option value="Pump and Dump Schemes">Pump and Dump Schemes</option>
+    <option value="Scam Initial Coin Offerings">Scam Initial Coin Offerings</option>
+    <option value="Traditional Theft">Traditional Theft</option>
+    <option value="Unscrupulous Promotors">Unscrupulous Promotors</option>
+    <option value="Unknown">Unknown</option>
+    <option value="Other">Other</option>
+    </select>
+    <input type="text" *ngIf="searchType === 'Others'" [(ngModel)]="searchTypeOther" placeholder="Specify Other Type">
+</div>
+<div class="form-container" id="ownership-from">
+    <input type="text" [(ngModel)]="searchOwnershipFrom" placeholder="Ownership of From Address">
+</div>
+<div class="form-container" id="ownership-to">
+    <input type="text" [(ngModel)]="searchOwnershipTo" placeholder="Ownership of To Address">
+</div>
+<div class="form-container" id="likelihood-of-fraud">
+    <input type="text" [(ngModel)]="searchLikelihood" placeholder="Likelihood of Fraud">
+</div>
+<div class="form-container" id="search-transaction-button">
+    <button (click)="search()">Search</button>
+</div>
+
+<!-- Display Result Section -->
+<div *ngIf="selectedAnalysis" class="selected-analysis-details">
+    <h1 id="result_title">Select Analysis Result</h1>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="location">Transaction Name</label>
+            <input type="text" [(ngModel)]="selectedAnalysis.transaction_name" name="transactionName" placeholder="Transaction Name" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="vulnerabilityType">Likelihood of Fraud</label>
+            <input type="text" [(ngModel)]="selectedAnalysis.likelihood_of_fraud" name="likelihoodOfFraud" placeholder="Likelihood of Fraud" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="securityLevel">Fraud Transaction Type</label>
+            <input type="text" [(ngModel)]="selectedAnalysis.fraud_transaction_type" name="fraudTransactionType" placeholder="Fraud Transaction Type" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="location">Ownership of From Address</label>
+            <input type="text" [(ngModel)]="selectedAnalysis.ownership_from" name="ownershipFrom" placeholder="Ownership of From Address" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+        <div class="form-element">
+            <label for="location">Ownership of To Address</label>
+            <input type="text" [(ngModel)]="selectedAnalysis.ownership_to" name="ownershipTo" placeholder="Ownership of To Address" [readonly]="!editMode" [class.editable]="editMode">
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Behavior of the From and To Addresses</label>
+            <textarea [(ngModel)]="selectedAnalysis.behavior" name="behavior" placeholder="Behavior" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>    
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Peculiarities in the Transaction</label>
+            <textarea [(ngModel)]="selectedAnalysis.peculiarities" name="peculiarities" placeholder="Peculiarities" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Market Context and Alerts</label>
+            <textarea [(ngModel)]="selectedAnalysis.broader_context" name="broaderContext" placeholder="Broader Context" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Supporting Evidence for Assessment</label>
+            <textarea [(ngModel)]="selectedAnalysis.supporting_evidence" name="supportingEvidence" placeholder="Supporting Evidence" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="form-element">
+            <label for="securityLevel">Recommended Actions</label>
+            <textarea [(ngModel)]="selectedAnalysis.recommend_actions" name="recommendActions" placeholder="Recommend Actions" [readonly]="!editMode" [class.editable]="editMode"></textarea>
+        </div>
+    </div>
+    <div class="button-group">
+        <button (click)="startEdit()" [disabled]="editMode" class="edit-btn">Edit</button>
+        <button (click)="saveEdit()" class="save-btn" [disabled]="!editMode">Save</button>
+        <button (click)="cancelEdit()" [disabled]="!editMode" class="cancel-btn">Cancel</button>
+        <button (click)="deleteAnalysis(selectedAnalysis.id)" [disabled]="!selectedAnalysis || editMode" class="delete-btn">Delete</button>
+    </div>
+</div>
+

@@ -1,0 +1,58 @@
+<!-- smart-contract-card.component.html -->
+<mat-card class="smart-contract-analysis-card">
+  <mat-card-header class="page_title">
+    <mat-card-title class="header_title">Smart Contract Analysis</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <label class="sub_title">Smart Contract Name (Required For Saving The Result)*</label>
+    <div class="transaction-form">
+      <mat-form-field appearance="outline" class="input_field">
+        <mat-label>Smart Contract Name (For saving analysis result)*</mat-label>
+        <input matInput placeholder="Enter name" [(ngModel)]="contractName">
+      </mat-form-field>
+    </div>
+    <label class="sub_title">Solidity Version (Required)*</label>
+    <div class="transaction-form">
+      <mat-form-field appearance="outline" class="input_field">
+        <mat-label>Enter Solidity version (e.g. 0.8.4)</mat-label>
+        <input matInput placeholder="Enter Solidity Version" [(ngModel)]="solidityVersion">
+      </mat-form-field>
+    </div>
+    <label class="sub_title">Smart Contract Code (Required)*</label>
+    <div class="transaction-form">  
+      <mat-form-field appearance="outline" class="full-width-input-code">
+        <textarea matInput placeholder="Enter smart contract code here..." rows="10" [(ngModel)]="smartContractCode"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" 
+        (click)="analyzeSmartContract()"
+        [disabled]="!solidityVersion.trim() || !smartContractCode.trim() || !isValidSolidityVersion(solidityVersion)"
+        class="analyze-button">Analyze Contract
+      </button> 
+    </div>
+    <br>
+    <div class="spinner-container" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+      <div class="analyzing-text">Analyzing contract...</div>
+    </div>
+    <br>
+    <div *ngIf="analysisResult" class="smart-contract-analysis-card">
+      <h2 class="fraud-analysis-result">ANALYSIS RESULT</h2>
+      <div *ngFor="let vulnerability of analysisResult.Vulnerabilities; index as i">
+        <h3 class="vul_type"><b>Vulnerability {{ i + 1 }}: {{ vulnerability.Type | removeSymbolsSmartContract }}</b></h3>
+        <p class="security_level"><strong>Security Level:</strong> {{ vulnerability.Level | removeSymbolsSmartContract }}</p>
+        <p><strong>Location:</strong> {{ vulnerability.Location | removeSymbolsSmartContract }}</p>
+        <p><strong>Consequences:</strong> {{ vulnerability.Consequences | removeSymbolsSmartContract }}</p>
+        <p><strong>Recommendation:</strong> {{ vulnerability.Recommendation | removeSymbolsSmartContract }}</p>
+        <p><strong>Explanation:</strong> {{ vulnerability.Explanation | removeSymbolsSmartContract }}</p>
+      </div>
+      <button mat-raised-button color="primary"
+        (click)="saveSmartContract()"
+        [disabled]="!contractName.trim()"
+        class="analyze-button">
+        Save Analysis Result
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+

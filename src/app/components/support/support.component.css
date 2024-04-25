@@ -1,0 +1,23 @@
+/* support.component.css */
+.support-section {
+    padding: 20px;
+  }
+  
+  .support-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .faqs, .contact-form, .community-forum, .educational-resources {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  h2, h3 {
+    margin-bottom: 15px;
+  }
+  
+  /* Add more styles for form, buttons, and other components */
+  

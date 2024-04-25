@@ -1,0 +1,53 @@
+/* dashboard.component.css */
+.dashboard-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.stats-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Style for loading and error states */
+.loading-text, .error-text {
+  text-align: center;
+}
+
+.monitored-contracts, .onchain-stats, .smart-contracts-section {
+  margin-bottom: 30px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+  text-align: left;
+}
+
+.card-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.card-text {
+  font-size: 20px;
+  color: #666;
+}
+
+.stats-cards {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* You can add more specific styles here to match the Hacken UI */

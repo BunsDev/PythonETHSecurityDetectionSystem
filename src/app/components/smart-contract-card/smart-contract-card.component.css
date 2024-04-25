@@ -1,0 +1,107 @@
+.smart-contract-analysis-card h2,
+.smart-contract-analysis-card h3,
+.smart-contract-analysis-card h4 {
+  color: #333;
+}
+
+.smart-contract-analysis-card p {
+  color: #666;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adjust the space between input fields */
+  padding-bottom: 60px;
+  padding-top: 10px;
+}
+
+.full-width-input-code {
+  width: 90%; /* Full width for input */
+}
+
+.full-width-input-version {
+  width: 50%; /* Full width for input */
+}
+
+.mat-form-field {
+  width: 100%; /* Ensures the mat-form-field takes full width */
+}
+
+.analyze-button {
+  color: white;
+  max-width: 20%; /* Adjust the width as needed */
+  margin-left: 1px; /* This will center the button */
+}
+
+.header_title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+  text-decoration: underline;
+  font-weight: 900;
+}
+
+.page_title {
+  margin-left: 35%;
+  text-align: center;
+}
+
+button {
+  width: 200px;
+}
+
+.input_field {
+  width: 40%;
+  height: 20px;
+}
+
+.sub_title {
+  font-size: large;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.security_level{
+  color: red;
+}
+
+.centered-snack-bar {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* Adjust as needed */
+  margin-top: 20px; /* Adjust as needed */
+  font-size: 1.2em; /* Adjust font size */
+  font-weight: bold;
+}
+
+.spinner-container .mat-spinner {
+  width: 50px; /* Adjust size */
+  height: 50px; /* Adjust size */
+}
+
+.spinner-container .analyzing-text {
+  margin-top: 10px; /* Adjust spacing */
+  font-size: 1.2em; /* Adjust text size */
+  color: #555; /* Adjust text color */
+  font-weight: bold;
+}
+
+  

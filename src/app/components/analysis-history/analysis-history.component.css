@@ -1,0 +1,240 @@
+/* analysis-history.component.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    line-height: 1.6;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 10px;
+    
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: 500;
+    font-size: medium;
+}
+
+th {
+    background-color: #31363F;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.selected-row {
+    background-color: #5fc4d1; /* Or any color you prefer */
+}
+
+
+
+tr:hover {
+    background-color: #ebf5ff;
+}
+
+/* Form styles */
+input[type="text"], select, input[type="date"] {
+    padding: 12px 15px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 30px); /* Adjust width considering padding */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+button {
+    background-color: #007bff; /* Blue */
+    border: none;
+    color: white;
+    padding: 12px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Edit, Save, Delete button styles inside forms */
+form button {
+    width: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+form button.save {
+    background-color: #28a745; /* Green color for save */
+}
+
+form button.delete {
+    background-color: #dc3545; /* Red color for delete */
+}
+
+/* Form container styles */
+form {
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+input[type="text"]:read-only,
+textarea:read-only {
+    background-color: #e9e9e9;
+    cursor: not-allowed;
+}
+
+/* Styles for editable fields */
+.editable {
+    background-color: white;
+    cursor: text;
+}
+
+/* Textarea improvements */
+textarea {
+    width: 100%;
+    height: 150px; /* Increased height for better visibility */
+    padding: 12px 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* Utility classes for margins */
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+
+/* Responsive card container for display selected entry */
+.card-container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Improve spacing between card sections */
+.card-section {
+    margin-bottom: 20px;
+}
+
+.card-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Card title styling */
+.card-title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Aligned buttons for better layout */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    margin-left: 8px;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+
+}  
+
+/* Styles for the container of the form elements */
+.form-container {
+    display: flex; /* Use flexbox to lay out children */
+    flex-wrap: wrap; /* Allow items to wrap as needed */
+    gap: 20px; /* Space between items */
+    margin: 10px;
+}
+
+/* Styles for individual form elements */
+.form-element {
+    flex: 1; /* Grow each item to use available space */
+    min-width: 200px; /* Minimum width of each item */
+    font-size: medium;
+}
+
+label {
+    font-weight: bold;
+}
+
+#result_title, #history_title {
+    text-align: center;
+    font-weight: 900;
+    text-decoration: underline;
+    padding: 20px;
+}
+
+/* Override styles for textarea to match other form elements */
+textarea {
+    height: 150px; /* Set a fixed height */
+}
+
+/* Adjust button styles */
+.edit-btn {
+    background-color: #007bff; /* Primary color for edit */
+}
+
+.save-btn {
+    background-color: #28a745; /* Success color for save */
+}
+
+.delete-btn {
+    background-color: #dc3545; /* Danger color for delete */
+}
+
+#contract_name, #vul_type, #contract_date{
+    width: 40%;
+}
+
+#search_contract_button {
+    width: 20%;
+}
+
+/* Add this to the bottom of your CSS */
+@media screen and (max-width: 768px) {
+    .form-container {
+        flex-direction: column; /* Stack form elements in a column on smaller screens */
+    }
+}

@@ -1,0 +1,24 @@
+####################################################
+# Preparation
+####################################################
+- install Python
+- install MySQL Database
+- create MySQL Database tables
+
+
+####################################################
+# Install Project Dependency
+####################################################
+python.exe -m pip install --upgrade pip
+pip install -U flask
+pip install -U flask-mysqldb
+pip install -U flask-cors
+pip install -U requests
+pip install -U python-dotenv
+
+
+####################################################
+# Run
+####################################################
+cd PythonETHSecurityDetectionSystem/api_utils
+py app.py

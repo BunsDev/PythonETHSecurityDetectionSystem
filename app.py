@@ -104,6 +104,7 @@ def save_contract():
     solidity_version = data.get('version')
     smart_contract_code = data.get('code')
     vulnerabilities = data.get('vulnerabilities', [])  # This should be an array of vulnerabilities
+    ipfsLink = data.get('ipfsLink')
 
     try:
         cursor = mysql.connection.cursor()
@@ -118,12 +119,12 @@ def save_contract():
             insert_query = '''
                 INSERT INTO smart_contract_analysis_results
                 (user_id, contract_name, solidity_version, smart_contract_code, vulnerability_type,
-                security_level, location, consequences, recommendation, explanation)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                security_level, location, consequences, recommendation, explanation, ipfs_link)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             '''
             cursor.execute(insert_query, (
                 user_id, contract_name, solidity_version, smart_contract_code, vulnerability_type,
-                security_level, location, consequences, recommendation, explanation
+                security_level, location, consequences, recommendation, explanation, ipfsLink
             ))
 
         mysql.connection.commit()
@@ -131,6 +132,7 @@ def save_contract():
         return jsonify({'message': 'Smart contract analysis results saved successfully'}), 200
     except Exception as e:
         print(f"An error occurred: {e}")
+
         return jsonify({'error': 'Failed to save the smart contract analysis results'}), 500
 
 
@@ -191,7 +193,8 @@ def update_contract(contract_id):
                 location = %s, 
                 consequences = %s, 
                 recommendation = %s, 
-                explanation = %s
+                explanation = %s,
+                ipfs_link = %s
             WHERE id = %s
         """
         cursor.execute(update_query, (
@@ -202,6 +205,7 @@ def update_contract(contract_id):
             data['consequences'],
             data['recommendation'],
             data['explanation'],
+            data['ipfs_link'],
             contract_id
         ))
         mysql.connection.commit()
@@ -227,7 +231,7 @@ def delete_contract(contract_id):
     
 
 ###########################################################################################
-#####################          Fraud Transaction Analysis            ######################### 
+#####################        ETH  Fraud Transaction Analysis      ######################### 
 ###########################################################################################
 
 ## Fraud Detection
@@ -424,7 +428,378 @@ def update_fraud_analysis(fraud_analysis_id):
         return jsonify({'message': 'Fraud analysis updated successfully'}), 200
     except Exception as e:
         return jsonify({'error': 'Failed to update fraud analysis result: ' + str(e)}), 500
+    
 
+
+
+
+###########################################################################################
+#####################     Polygon  Fraud Transaction Analysis     ######################### 
+###########################################################################################
+
+# Search fraud analysis result
+@app.route('/polygonSearchFraudAnalysis', methods=['GET'])
+def polygon_search_fraud_analysis():
+    # Retrieve query parameters
+    user_id = request.args.get('userId')
+    transaction_name = request.args.get('transactionName', '%')
+    fraud_type = request.args.get('fraudType', '%')
+    ownership_from = request.args.get('ownershipFrom', '%')
+    ownership_to = request.args.get('ownershipTo', '%')
+    likelihood_of_fraud = request.args.get('likelihoodOfFraud', '%')
+
+    try:
+        cursor = mysql.connection.cursor(cursors.DictCursor)
+        # Construct the search query with LIKE wildcards to allow partial matches
+        search_query = """
+            SELECT * FROM polygon_fraud_analysis_results WHERE
+            user_id = %s AND
+            transaction_name LIKE %s AND
+            fraud_transaction_type LIKE %s AND
+            ownership_from LIKE %s AND
+            ownership_to LIKE %s AND
+            likelihood_of_fraud LIKE %s
+        """
+        cursor.execute(search_query, (
+            user_id,
+            f"%{transaction_name}%",
+            f"%{fraud_type}%",
+            f"%{ownership_from}%",
+            f"%{ownership_to}%",
+            f"%{likelihood_of_fraud}%"
+        ))
+        results = cursor.fetchall()
+        cursor.close()
+        return jsonify(results), 200
+    except Exception as e:
+        print(f"An error occurred while searching: {e}")
+        return jsonify({'error': 'Failed to search fraud analysis results'}), 500
+
+
+
+# Save a new fraud analysis result
+@app.route('/polygonSaveFraudAnalysis', methods=['POST'])
+def polygon_save_fraud_analysis():
+    data = request.json
+    print("Incoming data:", data)  # Log the incoming data for debugging
+
+    # Ensure the incoming data has the necessary keys
+    required_fields = ['user_id', 'transaction_name', 'transaction_hash', 'fraud_analysis']
+    fraud_analysis_required_fields = [
+        'likelihoodOfFraud',  # The frontend sends this instead of Likelihood_of_Fraud_Or_Scam_In_Percentage
+        'fraudTransactionType',
+        'ownershipFrom',
+        'ownershipTo',
+        'behavior',
+        'peculiarities',
+        'broaderContext',
+        'supportingEvidence',
+        'recommendActions'
+    ]
+
+    # Check for missing fields
+    for field in required_fields:
+        if field not in data:
+            print(f"Missing field: {field}")
+            return jsonify({'error': f'Missing required field: {field}'}), 400
+
+    fraud_analysis = data['fraud_analysis']
+    for fa_field in fraud_analysis_required_fields:
+        if fa_field not in fraud_analysis:
+            print(f"Missing fraud_analysis field: {fa_field}")
+            return jsonify({'error': f'Missing fraud_analysis field: {fa_field}'}), 400
+        
+    # Clean the text fields with clean_text function
+    for key in ['behavior', 'peculiarities', 'broaderContext', 'supportingEvidence', 'recommendActions']:
+        if key in fraud_analysis:
+            fraud_analysis[key] = clean_text(fraud_analysis[key])
+
+    try:
+        cursor = mysql.connection.cursor()
+        insert_query = """INSERT INTO polygon_fraud_analysis_results (
+            user_id, transaction_name, transaction_hash, likelihood_of_fraud,
+            fraud_transaction_type, ownership_from, ownership_to, behavior,
+            peculiarities, broader_context, supporting_evidence, recommend_actions
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        # Adjust the keys to match the frontend payload
+        cursor.execute(insert_query, (
+            data['user_id'],
+            data['transaction_name'],
+            data['transaction_hash'],
+            fraud_analysis['likelihoodOfFraud'],  # Now matches the frontend
+            fraud_analysis['fraudTransactionType'],  # Now matches the frontend
+            fraud_analysis['ownershipFrom'],  # Now matches the frontend
+            fraud_analysis['ownershipTo'],  # Now matches the frontend
+            fraud_analysis['behavior'],  # Now matches the frontend
+            fraud_analysis['peculiarities'],  # Now matches the frontend
+            fraud_analysis['broaderContext'],  # Now matches the frontend
+            fraud_analysis['supportingEvidence'],  # Now matches the frontend
+            fraud_analysis['recommendActions']  # Now matches the frontend
+        ))
+        mysql.connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Fraud analysis result saved successfully'}), 200
+    except Exception as e:
+        print(f"An error occurred while inserting into database: {e}")
+        return jsonify({'error': 'Failed to save the fraud analysis result: ' + str(e)}), 500
+
+
+#Get Fraud transaction Analysis Result From DB
+@app.route('/polygonFraudAnalysisHistory/<int:user_id>', methods=['GET'])
+def polygon_get_fraud_analysis_history(user_id):
+    # Fetch and return analysis history from the database for the given user_id
+    cursor = mysql.connection.cursor(cursors.DictCursor)
+    cursor.execute("SELECT * FROM polygon_fraud_analysis_results WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
+    rows = cursor.fetchall()
+    cursor.close()
+    return jsonify(rows)
+
+
+#Delete Fraud transaction Analysis Result From DB
+@app.route('/polygonDeleteFraudAnalysis/<int:fraud_analysis_id>', methods=['DELETE'])
+def polygon_delete_fraud_analysis(fraud_analysis_id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM polygon_fraud_analysis_results WHERE id = %s", (fraud_analysis_id,))
+        mysql.connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Fraud analysis result deleted successfully'}), 200
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({'error': 'Failed to delete the fraud analysis result'}), 500
+
+
+#Update Fraud transaction Analysis Result From DB
+@app.route('/polygonUpdateFraudAnalysis/<int:fraud_analysis_id>', methods=['PUT'])
+def polygon_update_fraud_analysis(fraud_analysis_id):
+    logging.info(f"Updating fraud analysis {fraud_analysis_id}")
+    app.logger.info('PUT request received on /polygonUpdateFraudAnalysis/{}'.format(fraud_analysis_id))
+    app.logger.info('Request data: {}'.format(request.data))
+    data = request.get_json()  # Make sure to get the correct data
+    try:
+        cursor = mysql.connection.cursor()
+        # Update query with proper column names matching the database schema
+        update_query = """
+            UPDATE polygon_fraud_analysis_results SET
+            transaction_name = %s, 
+            likelihood_of_fraud = %s,
+            fraud_transaction_type = %s,
+            ownership_from = %s,
+            ownership_to = %s,
+            behavior = %s,
+            peculiarities = %s,
+            broader_context = %s,
+            supporting_evidence = %s,
+            recommend_actions = %s
+            WHERE id = %s
+        """
+        cursor.execute(update_query, (
+            data['transaction_name'],
+            data['likelihood_of_fraud'],
+            data['fraud_transaction_type'],
+            data['ownership_from'],
+            data['ownership_to'],
+            data['behavior'],
+            data['peculiarities'],
+            data['broader_context'],
+            data['supporting_evidence'],
+            data['recommend_actions'],
+            fraud_analysis_id
+        ))
+        affected_rows = cursor.rowcount  # Check how many rows were affected
+        mysql.connection.commit()
+        cursor.close()
+        if affected_rows == 0:
+            return jsonify({'error': 'No records found or updated for ID: ' + str(fraud_analysis_id)}), 404
+        return jsonify({'message': 'Fraud analysis updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Failed to update fraud analysis result: ' + str(e)}), 500
+    
+
+
+###########################################################################################
+#####################     Avalanche  Fraud Transaction Analysis   ######################### 
+###########################################################################################
+
+# Search fraud analysis result
+@app.route('/avalancheSearchFraudAnalysis', methods=['GET'])
+def avalanche_search_fraud_analysis():
+    # Retrieve query parameters
+    user_id = request.args.get('userId')
+    transaction_name = request.args.get('transactionName', '%')
+    fraud_type = request.args.get('fraudType', '%')
+    ownership_from = request.args.get('ownershipFrom', '%')
+    ownership_to = request.args.get('ownershipTo', '%')
+    likelihood_of_fraud = request.args.get('likelihoodOfFraud', '%')
+
+    try:
+        cursor = mysql.connection.cursor(cursors.DictCursor)
+        # Construct the search query with LIKE wildcards to allow partial matches
+        search_query = """
+            SELECT * FROM avalanche_fraud_analysis_results WHERE
+            user_id = %s AND
+            transaction_name LIKE %s AND
+            fraud_transaction_type LIKE %s AND
+            ownership_from LIKE %s AND
+            ownership_to LIKE %s AND
+            likelihood_of_fraud LIKE %s
+        """
+        cursor.execute(search_query, (
+            user_id,
+            f"%{transaction_name}%",
+            f"%{fraud_type}%",
+            f"%{ownership_from}%",
+            f"%{ownership_to}%",
+            f"%{likelihood_of_fraud}%"
+        ))
+        results = cursor.fetchall()
+        cursor.close()
+        return jsonify(results), 200
+    except Exception as e:
+        print(f"An error occurred while searching: {e}")
+        return jsonify({'error': 'Failed to search fraud analysis results'}), 500
+
+
+
+# Save a new fraud analysis result
+@app.route('/avalancheSaveFraudAnalysis', methods=['POST'])
+def avalanche_save_fraud_analysis():
+    data = request.json
+    print("Incoming data:", data)  # Log the incoming data for debugging
+
+    # Ensure the incoming data has the necessary keys
+    required_fields = ['user_id', 'transaction_name', 'transaction_hash', 'fraud_analysis']
+    fraud_analysis_required_fields = [
+        'likelihoodOfFraud',  # The frontend sends this instead of Likelihood_of_Fraud_Or_Scam_In_Percentage
+        'fraudTransactionType',
+        'ownershipFrom',
+        'ownershipTo',
+        'behavior',
+        'peculiarities',
+        'broaderContext',
+        'supportingEvidence',
+        'recommendActions'
+    ]
+
+    # Check for missing fields
+    for field in required_fields:
+        if field not in data:
+            print(f"Missing field: {field}")
+            return jsonify({'error': f'Missing required field: {field}'}), 400
+
+    fraud_analysis = data['fraud_analysis']
+    for fa_field in fraud_analysis_required_fields:
+        if fa_field not in fraud_analysis:
+            print(f"Missing fraud_analysis field: {fa_field}")
+            return jsonify({'error': f'Missing fraud_analysis field: {fa_field}'}), 400
+        
+    # Clean the text fields with clean_text function
+    for key in ['behavior', 'peculiarities', 'broaderContext', 'supportingEvidence', 'recommendActions']:
+        if key in fraud_analysis:
+            fraud_analysis[key] = clean_text(fraud_analysis[key])
+
+    try:
+        cursor = mysql.connection.cursor()
+        insert_query = """INSERT INTO avalanche_fraud_analysis_results (
+            user_id, transaction_name, transaction_hash, likelihood_of_fraud,
+            fraud_transaction_type, ownership_from, ownership_to, behavior,
+            peculiarities, broader_context, supporting_evidence, recommend_actions
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        # Adjust the keys to match the frontend payload
+        cursor.execute(insert_query, (
+            data['user_id'],
+            data['transaction_name'],
+            data['transaction_hash'],
+            fraud_analysis['likelihoodOfFraud'],  # Now matches the frontend
+            fraud_analysis['fraudTransactionType'],  # Now matches the frontend
+            fraud_analysis['ownershipFrom'],  # Now matches the frontend
+            fraud_analysis['ownershipTo'],  # Now matches the frontend
+            fraud_analysis['behavior'],  # Now matches the frontend
+            fraud_analysis['peculiarities'],  # Now matches the frontend
+            fraud_analysis['broaderContext'],  # Now matches the frontend
+            fraud_analysis['supportingEvidence'],  # Now matches the frontend
+            fraud_analysis['recommendActions']  # Now matches the frontend
+        ))
+        mysql.connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Fraud analysis result saved successfully'}), 200
+    except Exception as e:
+        print(f"An error occurred while inserting into database: {e}")
+        return jsonify({'error': 'Failed to save the fraud analysis result: ' + str(e)}), 500
+
+
+#Get Fraud transaction Analysis Result From DB
+@app.route('/avalancheFraudAnalysisHistory/<int:user_id>', methods=['GET'])
+def avalanche_get_fraud_analysis_history(user_id):
+    # Fetch and return analysis history from the database for the given user_id
+    cursor = mysql.connection.cursor(cursors.DictCursor)
+    cursor.execute("SELECT * FROM avalanche_fraud_analysis_results WHERE user_id = %s ORDER BY created_at DESC", (user_id,))
+    rows = cursor.fetchall()
+    cursor.close()
+    return jsonify(rows)
+
+
+#Delete Fraud transaction Analysis Result From DB
+@app.route('/avalancheDeleteFraudAnalysis/<int:fraud_analysis_id>', methods=['DELETE'])
+def avalanche_delete_fraud_analysis(fraud_analysis_id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM avalanche_fraud_analysis_results WHERE id = %s", (fraud_analysis_id,))
+        mysql.connection.commit()
+        cursor.close()
+        return jsonify({'message': 'Fraud analysis result deleted successfully'}), 200
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({'error': 'Failed to delete the fraud analysis result'}), 500
+
+
+#Update Fraud transaction Analysis Result From DB
+@app.route('/avalancheUpdateFraudAnalysis/<int:fraud_analysis_id>', methods=['PUT'])
+def avalanche_update_fraud_analysis(fraud_analysis_id):
+    logging.info(f"Updating fraud analysis {fraud_analysis_id}")
+    app.logger.info('PUT request received on /updateFraudAnalysis/{}'.format(fraud_analysis_id))
+    app.logger.info('Request data: {}'.format(request.data))
+    data = request.get_json()  # Make sure to get the correct data
+    try:
+        cursor = mysql.connection.cursor()
+        # Update query with proper column names matching the database schema
+        update_query = """
+            UPDATE avalanche_fraud_analysis_results SET
+            transaction_name = %s, 
+            likelihood_of_fraud = %s,
+            fraud_transaction_type = %s,
+            ownership_from = %s,
+            ownership_to = %s,
+            behavior = %s,
+            peculiarities = %s,
+            broader_context = %s,
+            supporting_evidence = %s,
+            recommend_actions = %s
+            WHERE id = %s
+        """
+        cursor.execute(update_query, (
+            data['transaction_name'],
+            data['likelihood_of_fraud'],
+            data['fraud_transaction_type'],
+            data['ownership_from'],
+            data['ownership_to'],
+            data['behavior'],
+            data['peculiarities'],
+            data['broader_context'],
+            data['supporting_evidence'],
+            data['recommend_actions'],
+            fraud_analysis_id
+        ))
+        affected_rows = cursor.rowcount  # Check how many rows were affected
+        mysql.connection.commit()
+        cursor.close()
+        if affected_rows == 0:
+            return jsonify({'error': 'No records found or updated for ID: ' + str(fraud_analysis_id)}), 404
+        return jsonify({'message': 'Fraud analysis updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Failed to update fraud analysis result: ' + str(e)}), 500
 
 
 
@@ -432,4 +807,4 @@ def update_fraud_analysis(fraud_analysis_id):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=6001)

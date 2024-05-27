@@ -93,7 +93,7 @@ def analyze_smart_contract(smart_contract_code, solidity_version):
     """
 
     data = {
-        'model': 'gpt-4-0125-preview',
+        'model': 'gpt-4o',
         'messages': [
             {"role": "system", "content": prompt},
             {"role": "user", "content": "Analyze the smart contract"}

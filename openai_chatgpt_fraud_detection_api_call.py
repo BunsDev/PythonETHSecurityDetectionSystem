@@ -287,7 +287,7 @@ def analyze_with_chatgpt(transaction_hash):
     """
 
     data = {
-        'model': 'gpt-4-0125-preview',
+        'model': 'gpt-4o',
         'messages': [
             {"role": "system", "content": prompt},
             {"role": "user", "content": "Analyze the transaction"}

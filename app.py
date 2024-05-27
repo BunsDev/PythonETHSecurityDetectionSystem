@@ -14,9 +14,9 @@ CORS(app)
 
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_PORT'] = 3306
-app.config['MYSQL_USER'] = 'amy'
-app.config['MYSQL_PASSWORD'] = 'amy'
-app.config['MYSQL_DB'] = 'db1'
+app.config['MYSQL_USER'] = 'kenneth8'
+app.config['MYSQL_PASSWORD'] = 'Kena108806#'
+app.config['MYSQL_DB'] = 'blockchain_security_detection_system'
 
 mysql = MySQL(app)
 
@@ -432,4 +432,4 @@ def update_fraud_analysis(fraud_analysis_id):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    app.run(debug=True, port=6000)
+    app.run(debug=True, port=5000)
